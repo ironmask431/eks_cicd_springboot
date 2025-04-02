@@ -47,3 +47,13 @@ jobs:
         run: |
           kubectl apply -f ./4.ordersystem/k8s/depl_svc.yml
           kubectl rollout restart deployment brad-order-backend -n bradkim
+
+      # Argo CD는 "YAML 파일이 있는 path"만 감시
+      # Git 커밋을 만들기 위해 사용자 이름을 설정
+      # - name: Update manifest image tag
+      #   run: |
+      #     sed -i "s|image: .*|image: $REGISTRY/$REPOSITORY:$IMAGE_TAG|" manifests/4.ordersystem/deployment.yaml
+      #     git config user.name kimseonguk197
+      #     git config user.email ksg39412@naver.com
+      #     git commit -am "update order-backend image $IMAGE_TAG"
+      #     git push
