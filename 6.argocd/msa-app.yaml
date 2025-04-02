@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: order-backend
+  name: order-msa
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/kimseonguk197/k8s_inflearn.git
     targetRevision: main
-    path: manifests/4.ordersystem
+    path: 6.argocd/5.msa
   destination:
     server: https://kubernetes.default.svc
     namespace: bradkim
