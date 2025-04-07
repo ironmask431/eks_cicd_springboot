@@ -18,5 +18,5 @@ spec:
     kind: Deployment
     name: brad-order-backend
   minReplicas: 1
-  maxReplicas: 4
+  maxReplicas: 20
   targetCPUUtilizationPercentage: 10
