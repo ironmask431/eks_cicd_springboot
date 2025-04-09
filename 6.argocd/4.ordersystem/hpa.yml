@@ -21,9 +21,9 @@ spec:
   maxReplicas: 20
   behavior:
     scaleUp:
-      stabilizationWindowSeconds: 50
+      stabilizationWindowSeconds: 30
     scaleDown:
-      stabilizationWindowSeconds: 50
+      stabilizationWindowSeconds: 30
   metrics:
     - type: Resource
       resource:
