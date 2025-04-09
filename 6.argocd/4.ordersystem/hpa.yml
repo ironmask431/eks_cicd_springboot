@@ -20,4 +20,4 @@ spec:
     name: brad-order-backend
   minReplicas: 1
   maxReplicas: 20
-  targetCPUUtilizationPercentage: 50
+  targetCPUUtilizationPercentage: 10 #10 -> 50
