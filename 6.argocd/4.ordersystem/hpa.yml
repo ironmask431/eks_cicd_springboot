@@ -12,18 +12,22 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: brad-order-backend-hpa
   namespace: bradkim
-  
 spec:
-# 초기에 튀는 cpu값은 무시하는 세팅(300초 여유)
-  behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 300
-    scaleDown:
-      stabilizationWindowSeconds: 300
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: brad-order-backend
   minReplicas: 1
   maxReplicas: 20
-  targetCPUUtilizationPercentage: 10 #10 -> 50
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 300
+    scaleDown:
+      stabilizationWindowSeconds: 300
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 10
