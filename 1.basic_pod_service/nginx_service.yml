@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service
-  namespace: bradkim-ns
+  namespace: bradkim
 spec:
   type: NodePort
   ports:
