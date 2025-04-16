@@ -1,10 +1,9 @@
 package com.example.ordersystem.member.controller;
 
-import com.example.ordersystem.common.auth.JwtTokenProvider;
+import com.example.ordersystem.member.service.JwtTokenProvider;
 import com.example.ordersystem.member.domain.Member;
 import com.example.ordersystem.member.dto.LoginDto;
 import com.example.ordersystem.member.dto.MemberRefreshDto;
-import com.example.ordersystem.member.dto.MemberResDto;
 import com.example.ordersystem.member.dto.MemberSaveReqDto;
 import com.example.ordersystem.member.service.MemberService;
 import io.jsonwebtoken.Claims;
@@ -14,16 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -49,29 +41,12 @@ public class MemberController {
         return new ResponseEntity<>(memberId, HttpStatus.CREATED);
     }
 
-    @GetMapping("/list")
-    @PreAuthorize("hasRole('ADMIN')") //가장 편한 방법, ROLE_ 붙일필요 없음. 예외는 filter레벨에서 발생.
-    public ResponseEntity<?> memberList(){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if(!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
-//            throw new AccessDeniedException("권한없음");
-//        }
-        List<MemberResDto> memberResDto = memberService.findAll();
-        return new ResponseEntity<>(memberResDto, HttpStatus.OK);
-    }
-
-    @GetMapping("/myinfo")
-    public ResponseEntity<?> myInfo(){
-        MemberResDto dto = memberService.myInfo();
-        return new ResponseEntity<>(dto, HttpStatus.OK);
-    }
-
     @PostMapping("/doLogin")
     public ResponseEntity<?> doLogin(@RequestBody LoginDto dto){
 //        email, password 검증
         Member member = memberService.login(dto);
 //        토큰 생성 및 return
-        String token = jwtTokenProvider.createToken(member.getEmail(), member.getRole().toString());
+        String token = jwtTokenProvider.createToken(member.getId().toString(), member.getRole().toString());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getEmail(), member.getRole().toString());
 //        redis에 rt저장
         redisTemplate.opsForValue().set(member.getEmail(), refreshToken, 200, TimeUnit.DAYS);//200일 ttl
