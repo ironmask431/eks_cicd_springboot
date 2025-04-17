@@ -32,6 +32,23 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+
+      - name: gateway build and push docker image to ecr
+        env:
+          REGISTRY: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: msa-apigateway
+          IMAGE_TAG: latest
+        run: |
+          docker build \
+          -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
+          -f ./5.msa/apigateway/Dockerfile ./5.msa/apigateway
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: eks kubectl apply
+        run: |
+          kubectl apply -f ./5.msa/apigateway/k8s/depl_svc.yml
+          kubectl rollout restart deployment apigateway-depl -n bradkim
+        
       - name: member build and push docker image to ecr
         env:
           REGISTRY: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com
