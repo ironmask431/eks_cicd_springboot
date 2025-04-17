@@ -3,7 +3,7 @@ name: deploy order order-backend
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build-and-deploy:
@@ -26,7 +26,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: update cluster infomation
-        run: aws eks update-kubeconfig --name 3team-cluster --region ap-northeast-2
+        run: aws eks update-kubeconfig --name my-cluster --region ap-northeast-2
 
       - name: Login to ECR
         id: login-ecr
@@ -34,8 +34,8 @@ jobs:
 
       - name: member build and push docker image to ecr
         env:
-          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: bradkim-msa-member
+          REGISTRY: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: msa-member
           IMAGE_TAG: latest
         run: |
           docker build \
@@ -46,12 +46,12 @@ jobs:
       - name: eks kubectl apply
         run: |
           kubectl apply -f ./5.msa/member/k8s/depl_svc.yml
-          kubectl rollout restart deployment bradkim-msa-member-depl -n bradkim
+          kubectl rollout restart deployment member-depl -n bradkim
 
       - name: order build and push docker image to ecr
         env:
-          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: bradkim-msa-order
+          REGISTRY: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: msa-ordering
           IMAGE_TAG: latest
         run: |
           docker build \
@@ -62,12 +62,12 @@ jobs:
       - name: eks kubectl apply
         run: |
           kubectl apply -f ./5.msa/ordering/k8s/depl_svc.yml
-          kubectl rollout restart deployment bradkim-msa-ordering-depl -n bradkim
+          kubectl rollout restart deployment ordering-depl -n bradkim
           
       - name: product build and push docker image to ecr
         env:
-          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: bradkim-msa-product
+          REGISTRY: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: msa-product
           IMAGE_TAG: latest
         run: |
           docker build \
@@ -78,4 +78,4 @@ jobs:
       - name: eks kubectl apply
         run: |
           kubectl apply -f ./5.msa/product/k8s/depl_svc.yml
-          kubectl rollout restart deployment bradkim-msa-product-depl -n bradkim
+          kubectl rollout restart deployment product-depl -n bradkim

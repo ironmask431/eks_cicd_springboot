@@ -4,7 +4,6 @@ import com.example.ordersystem.product.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,12 +13,10 @@ public class ProductRegisterDto {
     private String category;
     private int price;
     private int stockQuantity;
-    private MultipartFile productImage;
-
-    public Product toEntity(String email){
+    public Product toEntity(Long userId){
         return Product.builder()
-                .name(this.name).category(this.category).price(this.price).stockQuantity(this.stockQuantity)
-                .memberEmail(email)
+                .name(this.name).price(this.price).stockQuantity(this.stockQuantity)
+                .memberId(userId)
                 .build();
     }
 

@@ -1,21 +1,18 @@
 package com.example.ordersystem.ordering.service;
 
-
-import com.example.ordersystem.common.config.FeignTokenConfig;
 import com.example.ordersystem.ordering.dto.ProductDto;
 import com.example.ordersystem.ordering.dto.ProductUpdateStockDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-// name은 유레카의 service명이고, url은 쿠버네티스의 서비스명
-@FeignClient(name = "product-service", url="http://bradkim-msa-product-service", configuration = FeignTokenConfig.class)
+//name은 eureka에 등록된 호출할 서비스의 이름
+//url은 k8s에서 service명
+@FeignClient(name = "product-service", url = "http://product-service")
 public interface ProductFeign {
-    @GetMapping(value = "/product/{id}")
-    ProductDto getProductById(@PathVariable Long id);
 
-    @PutMapping(value = "/product/updatestock")
-    void updateProductStock(@RequestBody ProductUpdateStockDto dto);
+    @GetMapping("/product/{productId}")
+    ProductDto getProductById(@PathVariable Long productId, @RequestHeader("X-User-Id") String userId);
+
+    @PutMapping("/product/updatestock")
+    void updateProductStock(@RequestBody ProductUpdateStockDto productUpdateStockDto);
 }

@@ -7,9 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.core.RedisTemplate;import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfig {
@@ -41,29 +39,5 @@ public class RedisConfig {
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         return  redisTemplate;
     }
-
-
-
-    //    redis에 접근하기 위한 접근(connection)객체
-    @Bean
-    @Qualifier("stockinventory")
-    public RedisConnectionFactory stockRedisConnectionFactory(){
-        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName(host);
-        configuration.setPort(port);
-        configuration.setDatabase(1);
-        return new LettuceConnectionFactory(configuration);
-    }
-    //    redis에 저장할 key, value의 타입지정한 template객체 생성
-    @Bean
-    @Qualifier("stockinventory")
-    public RedisTemplate<String, String> stockRedisTemplate(@Qualifier("stockinventory") RedisConnectionFactory redisConnectionFactory){
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        return  redisTemplate;
-    }
-
 
 }
