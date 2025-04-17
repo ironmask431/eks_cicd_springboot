@@ -14,7 +14,7 @@ spec:
         app: member
     spec:
       containers:
-      - name: brad-order-backend
+      - name: member-container
         image: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com/msa-member:latest
         ports:
         - containerPort: 8080

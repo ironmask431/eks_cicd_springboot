@@ -4,7 +4,7 @@ metadata:
   name: ordering-depl
   namespace: bradkim
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ordering
@@ -14,7 +14,7 @@ spec:
         app: ordering
     spec:
       containers:
-      - name: brad-order-backend
+      - name: ordering-container
         image: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com/msa-ordering:latest
         ports:
         - containerPort: 8080

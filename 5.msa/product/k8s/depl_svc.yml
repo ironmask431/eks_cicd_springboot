@@ -14,7 +14,7 @@ spec:
         app: product
     spec:
       containers:
-      - name: brad-order-backend
+      - name: product-container
         image: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com/msa-product:latest
         ports:
         - containerPort: 8080
