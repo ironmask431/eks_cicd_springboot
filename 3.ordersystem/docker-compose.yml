@@ -1,16 +1,18 @@
 version: '3.8'
 services:
   mydb:
-    image: mariadb
+    image: mysql:8.0
     environment:
-      - MARIADB_ROOT_PASSWORD=1234
-      - MARIADB_DATABASE=ordersystem
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=ordersystem
     ports:
       - "3306:3306"
+
   myredis:
     image: redis
     ports:
       - "6379:6379"
+
   my-spring:
     build:
       context: .
@@ -19,7 +21,10 @@ services:
       - "8080:8080"
     depends_on:
       - mydb
+      - myredis
     restart: on-failure:10
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mariadb://mydb:3306/ordersystem
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mydb:3306/ordersystem?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
       - SPRING_REDIS_HOST=myredis
