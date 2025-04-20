@@ -9,7 +9,6 @@ spring :
     password: ${DB_PW}
   jpa:
     database: mysql
-    #    InnoDB??
     database-platform: org.hibernate.dialect.MySQL8Dialect
     generate-ddl: true
     hibernate:
