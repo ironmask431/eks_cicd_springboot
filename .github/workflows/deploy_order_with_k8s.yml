@@ -40,10 +40,10 @@ jobs:
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./3.ordersystem/Dockerfile ./3.ordersystem
+          -f ./2.ordersystem/Dockerfile ./2.ordersystem
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: eks kubectl apply
         run: |
           kubectl rollout restart deployment brad-order-backend -n bradkim
-      # kubectl apply -f ./3.ordersystem/k8s/depl_svc.yml
+      # kubectl apply -f ./2.ordersystem/k8s/depl_svc.yml
