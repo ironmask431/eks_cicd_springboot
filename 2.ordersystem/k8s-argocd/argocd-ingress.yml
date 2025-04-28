@@ -10,7 +10,7 @@ spec:
   tls:
   - hosts:
       - argo.bradkim198.shop
-    secretName: server-bradkim198-com-tls
+    secretName: argo-bradkim198-com-tls
   rules:
   - host: argo.bradkim198.shop
     http:
