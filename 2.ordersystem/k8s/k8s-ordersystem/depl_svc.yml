@@ -5,7 +5,7 @@ metadata:
   namespace: bradkim
 spec:
   revisionHistoryLimit: 2
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: brad-order-backend

@@ -18,6 +18,6 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: brad-order-backend
-  minReplicas: 1
+  minReplicas: 3
   maxReplicas: 4
   targetCPUUtilizationPercentage: 50
