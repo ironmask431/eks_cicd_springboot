@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: brad-order-backend
-        image: 148761635844.dkr.ecr.ap-northeast-2.amazonaws.com/brad-order-backend:latest
+        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/brad-order-backend:latest
         ports:
         - containerPort: 8080
         resources:
