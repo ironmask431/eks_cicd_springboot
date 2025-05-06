@@ -4,6 +4,7 @@ metadata:
   name: brad-order-backend
   namespace: bradkim
 spec:
+# Deployment나 StatefulSet이 유지할 "옛날 ReplicaSet"의 수를 제한하는 옵션
   revisionHistoryLimit: 2
   replicas: 2
   selector:

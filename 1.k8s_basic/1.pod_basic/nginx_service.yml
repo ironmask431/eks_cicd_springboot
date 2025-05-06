@@ -4,7 +4,9 @@ metadata:
   name: my-service
   namespace: bradkim
 spec:
-  # type: ClusterIP #default는 ClusterIP, NodePort등의 타입을 사용시 service를 통해 외부접근가능
+  # type: ClusterIP 
+  # 생략시 default는 ClusterIP.
+  # NodePort, LoadBalancer등의 타입을 사용시 service를 통해 외부접근가능
   ports:
   - port: 80
     targetPort: 80

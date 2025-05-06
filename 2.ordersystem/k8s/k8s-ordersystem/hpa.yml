@@ -20,4 +20,4 @@ spec:
     name: brad-order-backend
   minReplicas: 2
   maxReplicas: 4
-  targetCPUUtilizationPercentage: 70
+  targetCPUUtilizationPercentage: 70 #10프로로 낮춰서 테스트
