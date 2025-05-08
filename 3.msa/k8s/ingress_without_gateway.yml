@@ -7,7 +7,6 @@ metadata:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: my-issuer
     nginx.ingress.kubernetes.io/rewrite-target: /$1 #첫번쨰 prefix제거
-    nginx.ingress.kubernetes.io/use-regex: "true"  # prefix제거는 정규표현식과 함께 사용
 spec:
   tls:
   - hosts:
