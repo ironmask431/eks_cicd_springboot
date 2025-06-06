@@ -21,16 +21,16 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: server-bradkim198-com-tls
+  name: server-bradkim197-com-tls
   namespace: bradkim
 spec:
-  secretName: server-bradkim198-com-tls
+  secretName: server-bradkim197-com-tls
   duration: 2160h #90day
   renewBefore: 360h #before 15day
   issuerRef:
     name: my-issuer
     kind: ClusterIssuer
-  commonName: server.bradkim198.shop
+  commonName: server.bradkim197.shop
   dnsNames:
-  - server.bradkim198.shop
+  - server.bradkim197.shop
 

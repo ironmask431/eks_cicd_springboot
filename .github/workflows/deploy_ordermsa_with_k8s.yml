@@ -3,7 +3,7 @@ name: deploy order order-backend
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build-and-deploy:
@@ -36,63 +36,63 @@ jobs:
       - name: gateway build and push docker image to ecr
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: msa-apigateway
+          REPOSITORY: apigateway
           IMAGE_TAG: latest
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./5.msa/apigateway/Dockerfile ./5.msa/apigateway
+          -f ./3.msa/apigateway/Dockerfile ./3.msa/apigateway
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: eks kubectl apply
         run: |
-          kubectl apply -f ./5.msa/apigateway/k8s/depl_svc.yml
+          kubectl apply -f ./3.msa/apigateway/k8s/depl_svc.yml
           kubectl rollout restart deployment apigateway-depl -n bradkim
         
       - name: member build and push docker image to ecr
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: msa-member
+          REPOSITORY: member-service
           IMAGE_TAG: latest
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./5.msa/member/Dockerfile ./5.msa/member
+          -f ./3.msa/member/Dockerfile ./3.msa/member
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: eks kubectl apply
         run: |
-          kubectl apply -f ./5.msa/member/k8s/depl_svc.yml
+          kubectl apply -f ./3.msa/member/k8s/depl_svc.yml
           kubectl rollout restart deployment member-depl -n bradkim
 
-      - name: order build and push docker image to ecr
-        env:
-          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: msa-ordering
-          IMAGE_TAG: latest
-        run: |
-          docker build \
-          -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./5.msa/ordering/Dockerfile ./5.msa/ordering
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      # - name: order build and push docker image to ecr
+      #   env:
+      #     REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
+      #     REPOSITORY: ordering-service
+      #     IMAGE_TAG: latest
+      #   run: |
+      #     docker build \
+      #     -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
+      #     -f ./3.msa/ordering/Dockerfile ./3.msa/ordering
+      #     docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
   
-      - name: eks kubectl apply
-        run: |
-          kubectl apply -f ./5.msa/ordering/k8s/depl_svc.yml
-          kubectl rollout restart deployment ordering-depl -n bradkim
+      # - name: eks kubectl apply
+      #   run: |
+      #     kubectl apply -f ./3.msa/ordering/k8s/depl_svc.yml
+      #     kubectl rollout restart deployment ordering-depl -n bradkim
           
-      - name: product build and push docker image to ecr
-        env:
-          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: msa-product
-          IMAGE_TAG: latest
-        run: |
-          docker build \
-          -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./5.msa/product/Dockerfile ./5.msa/product
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      # - name: product build and push docker image to ecr
+      #   env:
+      #     REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
+      #     REPOSITORY: product-service
+      #     IMAGE_TAG: latest
+      #   run: |
+      #     docker build \
+      #     -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
+      #     -f ./3.msa/product/Dockerfile ./3.msa/product
+      #     docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
   
-      - name: eks kubectl apply
-        run: |
-          kubectl apply -f ./5.msa/product/k8s/depl_svc.yml
-          kubectl rollout restart deployment product-depl -n bradkim
+      # - name: eks kubectl apply
+      #   run: |
+      #     kubectl apply -f ./3.msa/product/k8s/depl_svc.yml
+      #     kubectl rollout restart deployment product-depl -n bradkim

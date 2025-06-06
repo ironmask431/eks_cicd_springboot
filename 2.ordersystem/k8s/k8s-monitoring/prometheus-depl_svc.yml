@@ -13,10 +13,15 @@ spec:
       labels:
         app: prometheus
     spec:
+    # rabc에서 만든 ServiceAccount를 Prometheus Pod에 연결
+    # Prometheus는 node에 접근하여 node-exporter로부터 정보를 수집
+      serviceAccountName: prometheus
       containers:
         - name: prometheus
           image: prom/prometheus
           args:
+          # 아래 volumnMount를 통해 저장된 prometheus.yml 파일을 read
+          # 이 파일을 기반으로 node-exporter에서 시스템 정보를 수집
             - "--config.file=/etc/prometheus/prometheus.yml"
           ports:
             - containerPort: 9090
@@ -32,6 +37,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/prometheus
+              # 아래의 volumes에 저장된 config설정을 위 volumeMount로 즉, 컨테이너 내의 /etc/prometheus에 저장하는것
       volumes:
         - name: config-volume
           configMap:
@@ -40,7 +46,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: prometheus
+  name: prometheus-service
   namespace: monitoring
 spec:
   ports:
