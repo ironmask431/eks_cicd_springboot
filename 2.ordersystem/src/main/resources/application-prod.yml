@@ -2,10 +2,6 @@ spring :
   config:
     activate:
       on-profile: prod
-  redis:
-  # k8s의 redis 서비스명을 지정
-    host: redis-service
-    port: 6379
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # DB_HOST는 k8s의 Secret 내의 Key이름과 일치
@@ -19,6 +15,11 @@ spring :
     hibernate:
       ddl-auto: create
     show_sql: true
+  data:
+    redis:
+      # k8s의 redis 서비스명을 지정
+      host: redis-service
+      port: 6379
 jwt:
   expiration: 1000
   # 실제 실무에서는 secretKey값도 secret화 시켜야 할것. 
