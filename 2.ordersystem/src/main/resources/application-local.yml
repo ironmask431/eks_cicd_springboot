@@ -2,6 +2,10 @@ spring :
   config:
     activate:
       on-profile: local
+  redis:
+    # host: host.docker.internal
+    host: localhost
+    port: 6379
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ordersystem?useSSL=false&allowPublicKeyRetrieval=true
@@ -15,10 +19,6 @@ spring :
     hibernate:
       ddl-auto: create
     show_sql: true
-  data:
-    redis:
-      host: localhost
-      port: 6379
 jwt:
   expiration: 1000
   #  인코딩된 문자 32자 이상 필요.(특수문자안됨)
