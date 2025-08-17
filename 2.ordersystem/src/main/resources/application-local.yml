@@ -4,8 +4,9 @@ spring :
       on-profile: local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ordersystem?useSSL=false&allowPublicKeyRetrieval=true
-    # url: jdbc:mysql://host.docker.internal:3306/ordersystem?useSSL=false&allowPublicKeyRetrieval=true
+    # url: jdbc:mysql://localhost:3306/ordersystem?useSSL=false&allowPublicKeyRetrieval=true
+    # docker 컨테이너에서 구동 시 도커 내부의 localhost를 참조하는 방식.
+    url: jdbc:mysql://host.docker.internal:3306/ordersystem?useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: 1234
   jpa:
@@ -17,7 +18,8 @@ spring :
     show_sql: true
   data:
     redis:
-      host: localhost
+      # host: localhost
+      host: host.docker.internal
       port: 6379
 jwt:
   expiration: 1000
