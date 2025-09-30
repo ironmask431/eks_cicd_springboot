@@ -3,7 +3,7 @@ kind: Pod
 metadata:
 # pod의 이름은 유일해야함
   name: my-nginx
-  namespace: bradkim
+  namespace: leesh
   # labels는 service의 라우팅 대상이 되는 이름. 같은 label이 붙은 pod여러개는 가능
   # service의 selector.app을 통해 매핑
   labels:
