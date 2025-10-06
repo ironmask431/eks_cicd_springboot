@@ -46,7 +46,7 @@ jobs:
           docker buildx build \
           --platform linux/amd64,linux/arm64 \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./2.ordersystem/Dockerfile ./2.ordersystem
+          -f ./2.ordersystem/Dockerfile ./2.ordersystem \
           --push 
 
       - name: eks kubectl apply # 7. deploy rollout restart
