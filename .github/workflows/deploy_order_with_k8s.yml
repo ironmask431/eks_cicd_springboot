@@ -3,47 +3,48 @@ name: deploy order order-backend
 on:
   push:
     branches:
-      - dev
+      - main # 어떤 브랜치에 push 발생 시 동작하는지.
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # 어떤 github 가상 pc (서버)를 쓸 것인지 정의
     steps:
       - name: checkout github
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2 # uses : 이미 만들어져있는 명령어들의 집합 / 1. 빌드할 소스코드를 가상서버로 checkout
       
       - name: install kubectl
-        uses: azure/setup-kubectl@v3
+        uses: azure/setup-kubectl@v3 # 2. 가상서버에 kubectl 설치
         with:
           version: "v1.25.9"
         id: install
         
       - name: configure aws
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1 # 3. 가상서버에 aws-cli 설치 및 aws 계정 로그인
         with:
           aws-access-key-id: ${{ secrets.AWS_KEY }}
-          aws-secret-access-key:  ${{ secrets.AWS_SECRET }}
+          aws-secret-access-key:  ${{ secrets.AWS_SECRET }} # 이 값들은 github secret  에 저장해놓는다.
           aws-region: ap-northeast-2
 
       - name: update cluster infomation
-        run: aws eks update-kubeconfig --name  my-cluster --region ap-northeast-2
+        run: aws eks update-kubeconfig --name  my-cluster-2 --region ap-northeast-2 # run : 내가 직접 작성하는 명령어 / 4. 가상서버에 내 eks 클러스터에 접근 가능설정
 
       - name: Login to ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v1 # 5. ECR 로그인
 
-      - name: build and push docker image to ecr
+      - name: build and push docker image to ecr # 6. 도커 이미지, 빌드 푸시
         env:
-          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
+          REGISTRY: 919350389056.dkr.ecr.ap-northeast-2.amazonaws.com # ECR 주소, 환경변수 설정
           REPOSITORY: order-backend
           IMAGE_TAG: latest
         run: |
-          docker build \
+          docker buildx build \
+          --platform linux/amd64,linux/arm64 \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
           -f ./2.ordersystem/Dockerfile ./2.ordersystem
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG 
 
-      - name: eks kubectl apply
+      - name: eks kubectl apply # 7. deploy rollout restart
         run: |
-          kubectl rollout restart deployment ordersystem-backend -n bradkim
+          kubectl rollout restart deployment ordersystem-backend -n leesh
         # kubectl apply -f ./2.ordersystem/k8s/k8s-ordersystem/depl_svc.yml
