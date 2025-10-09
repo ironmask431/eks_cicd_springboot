@@ -1,8 +1,9 @@
 apiVersion: apps/v1
 # DaemonSet은 클러스터 내 모든 노드에 Pod를 하나씩 자동으로 배포하기 위한 리소스
+# 각 노드에 node-exporter 파드가 하나씩 떠서,  해당 노드의 자원현황을 수집한다.
 kind: DaemonSet
 metadata:
-  name: node-exporter
+  name: node-exporter # 이 자원의 이름과 네임스페이스 지정
   namespace: monitoring
 spec:
   selector:
@@ -18,15 +19,15 @@ spec:
           image: prom/node-exporter
           ports:
             - containerPort: 9100
-            # 컨테이너의 포트를 노드(호스트) 자체의 포트로 직접 노출하겠다는 의미
+            # 컨테이너의 포트를 노드(호스트) 자체의 포트로 직접 노출하겠다는 의미 (서비스를 통해 노드에 접근하지 않음)
               hostPort: 9100
           volumeMounts:
-          # volumeMounts : 실제경로의 파일을 컨테이너내의 경로에 올리는 작업
+          # volumeMounts : 노드 컴퓨터의 실제경로의 파일을 node-exporter 컨테이너내의 경로에 올리는 작업
           # proc : CPU, 메모리, 프로세스 등의 실시간 정보 제공
           # sys : 커널 상태, 디바이스, 하드웨어 정보 등
           # root : 디스크 사용량
             - name: proc
-              mountPath: /host/proc
+              mountPath: /host/proc # 이경로는 node-exporter 컨테이너 리눅스의 경로
               readOnly: true
             - name: sys
               mountPath: /host/sys
@@ -34,10 +35,11 @@ spec:
             - name: root
               mountPath: /rootfs
               readOnly: true
+      # volumes : 노드 컴퓨터에서 파일을 가져올 실제경로 지정
       volumes:
         - name: proc
           hostPath:
-            path: /proc
+            path: /proc # 이경로는 노트컴퓨터 리눅스의 경로
         - name: sys
           hostPath:
             path: /sys
@@ -56,3 +58,8 @@ spec:
 #   ports:
 #     - port: 9100
 #       targetPort: 9100
+
+# 서비스 자원은 만들지 않는 이유.
+# 서비스를 통해서 node-exporter 파드들에 접근하게 만들면, 서비스는 만들어진 각 파드들에 라운드로빈 방식으로 로드밸런싱하여 접근한다.
+# 프로메테우스가 각 노드에 있는 파드중 하나를 지정하여 접근 할 수 있도록 해야하기 때문에 서비스를 통해 접근하지않고
+# 파드에 직접접근 가능하도록 해야한다.
