@@ -26,7 +26,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: update cluster infomation
-        run: aws eks update-kubeconfig --name  my-cluster-2 --region ap-northeast-2 # run : 내가 직접 작성하는 명령어 / 4. 가상서버에 내 eks 클러스터에 접근 가능설정
+        run: aws eks update-kubeconfig --name my-cluster-2 --region ap-northeast-2 # run : 내가 직접 작성하는 명령어 / 4. 가상서버에 내 eks 클러스터에 접근 가능설정
 
       - name: Login to ECR
         id: login-ecr
