@@ -3,7 +3,7 @@ name: deploy order order-backend
 on:
   push:
     branches:
-      - main # 어떤 브랜치에 push 발생 시 동작하는지.
+      - dev # 어떤 브랜치에 push 발생 시 동작하는지.
 
 jobs:
   build-and-deploy:
