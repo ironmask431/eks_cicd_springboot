@@ -1,5 +1,6 @@
 # 필요프로그램 설치
-FROM openjdk:17-jdk-alpine as stage1
+# FROM openjdk:17-jdk-alpine as stage1 # 해당이미지 오류 발생하여 아래로 대체.
+FROM bellsoft/liberica-openjdk-alpine:17 as stage1
 # 파일 복사
 WORKDIR /app
 COPY gradle gradle
