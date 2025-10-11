@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: product-depl
-  namespace: bradkim
+  namespace: leesh
 spec:
   replicas: 1
   selector:
@@ -54,7 +54,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: product-service
-  namespace: bradkim
+  namespace: leesh
 spec:
   type: ClusterIP
   ports:
