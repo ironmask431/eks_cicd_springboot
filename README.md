@@ -1,4 +1,4 @@
-### AWS EKS를 활용한 spring 운영서버 배포
+## AWS EKS를 활용한 spring 운영서버 배포
 
 springboot 기반 MSA 서비스를 AWS EKS환경에 배포하는 모든 과정 정리
 
